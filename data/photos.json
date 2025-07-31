@@ -1,0 +1,137 @@
+{
+  "photos": [
+    {
+      "id": 1,
+      "title": "Sunset at Golden Gate",
+      "category": "Landscape",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop",
+      "author": "Bibek Karki",
+      "location": "Kathmandu, Nepal",
+      "description": "Beautiful sunset captured at the iconic Golden Gate Bridge",
+      "camera": "Canon EOS R5",
+      "date": "2024-01-15"
+    },
+    {
+      "id": 2,
+      "title": "Portrait in Natural Light",
+      "category": "Portrait",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+      "author": "Bibek Karki",
+      "location": "Pokhara, Nepal",
+      "description": "Professional portrait using natural window light",
+      "camera": "Canon EOS R5",
+      "date": "2024-01-10"
+    },
+    {
+      "id": 3,
+      "title": "Urban Architecture",
+      "category": "Architecture",
+      "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop",
+      "author": "Bibek Karki",
+      "location": "Lalitpur, Nepal",
+      "description": "Modern urban architecture in the city center",
+      "camera": "Canon EOS R5",
+      "date": "2024-01-08"
+    },
+    {
+      "id": 4,
+      "title": "Street Photography",
+      "category": "Street",
+      "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop",
+      "author": "Bibek Karki",
+      "location": "Thamel, Kathmandu",
+      "description": "Candid street photography capturing daily life",
+      "camera": "Canon EOS R5",
+      "date": "2024-01-05"
+    },
+    {
+      "id": 5,
+      "title": "Mountain Landscape",
+      "category": "Landscape",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop",
+      "author": "Bibek Karki",
+      "location": "Everest Base Camp, Nepal",
+      "description": "Breathtaking mountain landscape at sunrise",
+      "camera": "Canon EOS R5",
+      "date": "2024-01-03"
+    },
+    {
+      "id": 6,
+      "title": "Professional Headshot",
+      "category": "Portrait",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+      "author": "Bibek Karki",
+      "location": "Baneshwor, Kathmandu",
+      "description": "Clean professional headshot for business",
+      "camera": "Canon EOS R5",
+      "date": "2024-01-01"
+    },
+    {
+      "id": 7,
+      "title": "Modern Building",
+      "category": "Architecture",
+      "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop",
+      "author": "Bibek Karki",
+      "location": "New Baneshwor, Kathmandu",
+      "description": "Contemporary architecture design",
+      "camera": "Canon EOS R5",
+      "date": "2023-12-28"
+    },
+    {
+      "id": 8,
+      "title": "City Life",
+      "category": "Street",
+      "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop",
+      "author": "Bibek Karki",
+      "location": "Durbar Square, Kathmandu",
+      "description": "Vibrant city life and culture",
+      "camera": "Canon EOS R5",
+      "date": "2023-12-25"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Portrait",
+      "icon": "person",
+      "count": 24
+    },
+    {
+      "name": "Landscape",
+      "icon": "mountain",
+      "count": 18
+    },
+    {
+      "name": "Street",
+      "icon": "car",
+      "count": 31
+    },
+    {
+      "name": "Architecture",
+      "icon": "business",
+      "count": 15
+    },
+    {
+      "name": "Nature",
+      "icon": "leaf",
+      "count": 22
+    },
+    {
+      "name": "Abstract",
+      "icon": "color-palette",
+      "count": 12
+    }
+  ],
+  "author": {
+    "name": "Bibek Karki",
+    "bio": "Professional photographer with 8+ years of experience capturing life's beautiful moments. Specializing in portraits, landscapes, and street photography.",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
+    "location": "Kathmandu, Nepal",
+    "website": "www.bibekkarki.com",
+    "email": "hello@bibekkarki.com",
+    "stats": {
+      "photos": 156,
+      "followers": 2847,
+      "following": 892
+    }
+  }
+} 

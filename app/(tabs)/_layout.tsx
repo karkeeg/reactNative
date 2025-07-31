@@ -1,15 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Tabs } from "expo-router";
-import React from "react";
 import type { TextStyle, ViewStyle } from "react-native";
 import { Text, View } from "react-native";
 
 const tabConfig = [
   { name: "index", label: "Home", icon: "home" },
-  { name: "Search", label: "Search", icon: "search" },
+  { name: "Search", label: "Projects", icon: "folder" },
   { name: "profile", label: "Profile", icon: "person" },
-  { name: "Saved", label: "Saved", icon: "bookmark" },
+  { name: "Saved", label: "Qualifications", icon: "school" },
 ];
 
 type TabBarIconProps = { focused: boolean };
@@ -17,7 +16,7 @@ type TabBarIconProps = { focused: boolean };
 const getTabBarIcon =
   (icon: string, label: string) =>
   ({ focused }: TabBarIconProps) => {
-    const activeColors = ["#3B3B1A", "#AEC8A4"] as [string, string];
+    const activeColors = ["#374151", "#6b7280"] as [string, string];
     const containerStyle: ViewStyle = {
       borderRadius: 100,
       width: focused ? 102 : 48,
@@ -31,8 +30,8 @@ const getTabBarIcon =
       alignSelf: "center",
       flexDirection: "column",
     };
-    const iconColor = focused ? "#fff" : "#123121";
-    const textColor = focused ? "#fff" : "#123121";
+    const iconColor = focused ? "#fff" : "#ffffff";
+    const textColor = focused ? "#fff" : "#ffffff";
     const textStyle: TextStyle = {
       color: textColor,
       fontSize: 12,
@@ -71,7 +70,6 @@ const _layout = () => {
           elevation: 0,
           shadowOpacity: 0,
           position: "absolute",
-         
           margin:20,
         },
       }}
@@ -85,8 +83,8 @@ const _layout = () => {
             headerShown: false,
             tabBarIcon: getTabBarIcon(tab.icon, tab.label),
             tabBarLabel: () => null,
-            tabBarActiveTintColor: "#123123",
-            tabBarInactiveTintColor: "#8e8e93",
+            tabBarActiveTintColor: "#ffffff",
+            tabBarInactiveTintColor: "#ffffff",
           }}
         />
       ))}

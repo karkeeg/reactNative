@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "practice-app",
-    "slug": "practice-app",
+    "name": "Karkee's Photography",
+    "slug": "karkee-photography",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/image.png",
