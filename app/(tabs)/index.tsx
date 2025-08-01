@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
-import { Alert, Image, Linking, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Alert, Animated, Image, Linking, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Developer portfolio data
@@ -94,6 +94,25 @@ export default function Index() {
     message: ''
   });
 
+  // Animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(50)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
   const handleSendEmail = () => {
     const { name, email, subject, message } = contactForm;
     
@@ -112,7 +131,14 @@ export default function Index() {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-900">
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Animated.View
+        style={{
+          flex: 1,
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }],
+        }}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View className="px-6 pt-4 pb-6">
           <View className="flex-row items-center justify-between">
@@ -142,7 +168,7 @@ export default function Index() {
             <View className="relative z-10">
               <View className="flex-row items-center mb-4">
                 <Image 
-                  source={{ uri: portfolioData.hero.avatar }} 
+                  source={portfolioData.hero.avatar} 
                   className="w-20 h-20 rounded-full mr-4 border-4 border-gray-700"
                 />
                 <View className="flex-1">
@@ -223,7 +249,7 @@ export default function Index() {
                 className="w-80 bg-gray-800 rounded-2xl overflow-hidden mr-4"
                 style={{ marginRight: index === portfolioData.featuredProjects.length - 1 ? 0 : 16 }}
               >
-                <Image source={{ uri: project.image }} className="w-full h-48" />
+                <Image source={{ uri: String(project.image) }} className="w-full h-48" />
                 <View className="p-4">
                   <Text className="text-white font-semibold text-lg mb-2">{project.title}</Text>
                   <Text className="text-gray-400 text-sm mb-3">{project.description}</Text>
@@ -257,6 +283,7 @@ export default function Index() {
         {/* Bottom spacing */}
         <View className="h-20" />
       </ScrollView>
+      </Animated.View>
 
       {/* Contact Modal */}
       <Modal

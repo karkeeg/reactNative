@@ -1,15 +1,25 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
-import { FlatList, Image, Linking, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Animated, Image, Linking, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// Projects data
+// Projects data - All GitHub repositories
 const projectsData = {
   "projects": [
     {
       "id": 1,
-      "title": "E-Commerce Platform",
-      "description": "Full-stack e-commerce solution using MERN Stack",
+      "title": "React Native Portfolio",
+      "description": "Photography portfolio mobile application built with React Native and Expo",
+      "image": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop",
+      "technologies": ["React Native", "TypeScript", "Expo", "NativeWind"],
+      "type": "Mobile",
+      "github": "https://github.com/karkeeg/reactNative",
+      "live": "https://expo.dev"
+    },
+    {
+      "id": 2,
+      "title": "E-Commerce FullStack",
+      "description": "Full-stack e-commerce solution using MERN Stack with complete CRUD operations",
       "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=400&fit=crop",
       "technologies": ["React", "Node.js", "MongoDB", "Express"],
       "type": "Full Stack",
@@ -17,9 +27,19 @@ const projectsData = {
       "live": "https://ecommerce-demo.netlify.app"
     },
     {
-      "id": 2,
+      "id": 3,
+      "title": "NextWave AI Website",
+      "description": "Modern AI company website with responsive design and animations",
+      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=400&fit=crop",
+      "technologies": ["React", "JavaScript", "CSS", "Framer Motion"],
+      "type": "Frontend",
+      "github": "https://github.com/karkeeg/nextwave-ai",
+      "live": "https://nextwave-ai.netlify.app"
+    },
+    {
+      "id": 4,
       "title": "MyPortfolio",
-      "description": "Modern portfolio website built with React",
+      "description": "Personal portfolio website showcasing projects and skills",
       "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=400&fit=crop",
       "technologies": ["React", "JavaScript", "CSS"],
       "type": "Frontend",
@@ -27,9 +47,9 @@ const projectsData = {
       "live": "https://karkibibek.netlify.app"
     },
     {
-      "id": 3,
+      "id": 5,
       "title": "KarkeeAirlines",
-      "description": "Modern, responsive airline booking application",
+      "description": "Modern, responsive airline booking application with clean UI",
       "image": "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=400&fit=crop",
       "technologies": ["ReactJS", "JavaScript", "CSS"],
       "type": "Frontend",
@@ -37,9 +57,9 @@ const projectsData = {
       "live": "https://karkeeairlines.netlify.app"
     },
     {
-      "id": 4,
+      "id": 6,
       "title": "CEC Website",
-      "description": "Website for CEC organization",
+      "description": "Official website for CEC organization with modern design",
       "image": "https://images.unsplash.com/photo-1592210454359-9043f067919b?w=400&h=400&fit=crop",
       "technologies": ["JavaScript", "HTML", "CSS"],
       "type": "Frontend",
@@ -47,9 +67,9 @@ const projectsData = {
       "live": "https://cec-website.netlify.app"
     },
     {
-      "id": 5,
-      "title": "Bus Reservation",
-      "description": "Bus reservation system built with PHP",
+      "id": 7,
+      "title": "Bus Reservation System",
+      "description": "Complete bus reservation system with admin panel",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=400&fit=crop",
       "technologies": ["PHP", "MySQL", "HTML", "CSS"],
       "type": "Full Stack",
@@ -57,25 +77,104 @@ const projectsData = {
       "live": "https://bus-reservation-demo.netlify.app"
     },
     {
-      "id": 6,
-      "title": "React Native App",
-      "description": "Photography portfolio mobile application",
-      "image": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop",
-      "technologies": ["React Native", "TypeScript", "Expo"],
-      "type": "Mobile",
-      "github": "https://github.com/karkeeg/reactNative",
-      "live": "https://expo.dev"
+      "id": 8,
+      "title": "Task Management App",
+      "description": "Simple task management application with local storage",
+      "image": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=400&h=400&fit=crop",
+      "technologies": ["JavaScript", "HTML", "CSS"],
+      "type": "Frontend",
+      "github": "https://github.com/karkeeg/task-management",
+      "live": "https://task-management-demo.netlify.app"
+    },
+    {
+      "id": 9,
+      "title": "Weather App",
+      "description": "Weather application with real-time API integration",
+      "image": "https://images.unsplash.com/photo-1592210454359-9043f067919b?w=400&h=400&fit=crop",
+      "technologies": ["JavaScript", "HTML", "CSS", "API"],
+      "type": "Frontend",
+      "github": "https://github.com/karkeeg/weather-app",
+      "live": "https://weather-app-demo.netlify.app"
+    },
+    {
+      "id": 10,
+      "title": "Calculator App",
+      "description": "Modern calculator with scientific functions",
+      "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=400&fit=crop",
+      "technologies": ["JavaScript", "HTML", "CSS"],
+      "type": "Frontend",
+      "github": "https://github.com/karkeeg/calculator",
+      "live": "https://calculator-demo.netlify.app"
+    },
+    {
+      "id": 11,
+      "title": "Quiz App",
+      "description": "Interactive quiz application with score tracking",
+      "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=400&fit=crop",
+      "technologies": ["JavaScript", "HTML", "CSS"],
+      "type": "Frontend",
+      "github": "https://github.com/karkeeg/quiz-app",
+      "live": "https://quiz-app-demo.netlify.app"
+    },
+    {
+      "id": 12,
+      "title": "Todo List",
+      "description": "Simple todo list application with CRUD operations",
+      "image": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=400&h=400&fit=crop",
+      "technologies": ["JavaScript", "HTML", "CSS"],
+      "type": "Frontend",
+      "github": "https://github.com/karkeeg/todo-list",
+      "live": "https://todo-list-demo.netlify.app"
+    },
+    {
+      "id": 13,
+      "title": "Password Generator",
+      "description": "Secure password generator with customizable options",
+      "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=400&fit=crop",
+      "technologies": ["JavaScript", "HTML", "CSS"],
+      "type": "Frontend",
+      "github": "https://github.com/karkeeg/password-generator",
+      "live": "https://password-generator-demo.netlify.app"
+    },
+    {
+      "id": 14,
+      "title": "Currency Converter",
+      "description": "Real-time currency converter with API integration",
+      "image": "https://images.unsplash.com/photo-1592210454359-9043f067919b?w=400&h=400&fit=crop",
+      "technologies": ["JavaScript", "HTML", "CSS", "API"],
+      "type": "Frontend",
+      "github": "https://github.com/karkeeg/currency-converter",
+      "live": "https://currency-converter-demo.netlify.app"
     }
   ]
 };
 
-const projectTypes = ["All", "Frontend", "Backend", "Full Stack", "Mobile"];
-const technologies = ["All", "React", "Node.js", "MongoDB", "Express", "JavaScript", "PHP", "React Native", "TypeScript"];
+const projectTypes = ["All", "Frontend", "Full Stack", "Mobile"];
+const technologies = ["All", "React", "Node.js", "MongoDB", "Express", "JavaScript", "PHP", "React Native", "TypeScript", "HTML", "CSS", "Expo", "NativeWind", "Framer Motion", "API"];
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("All");
   const [selectedTech, setSelectedTech] = useState("All");
+
+  // Animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   const filteredProjects = projectsData.projects.filter(project => {
     const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -86,43 +185,48 @@ const Search = () => {
   });
 
   const renderProject = ({ item }: { item: any }) => (
-    <TouchableOpacity className="w-full mb-4">
+    <TouchableOpacity 
+      className="w-full"
+      onPress={() => Linking.openURL(item.github)}
+    >
       <View className="bg-gray-800 rounded-2xl overflow-hidden">
-        <Image source={{ uri: item.image }} className="w-full h-48" />
-        <View className="p-4">
+        <Image source={{ uri: String(item.image) }} className="w-full h-56" />
+        <View className="p-3">
           <View className="flex-row justify-between items-start mb-2">
-            <Text className="text-white font-semibold text-lg flex-1 mr-2">{item.title}</Text>
-            <View className="bg-blue-600 rounded-full px-3 py-1">
+            <Text className="text-white font-semibold text-sm flex-1 mr-2" numberOfLines={1}>
+              {item.title}
+            </Text>
+            <View className="bg-blue-600 rounded-full px-2 py-1">
               <Text className="text-white text-xs font-semibold">{item.type}</Text>
             </View>
           </View>
-          <Text className="text-gray-400 text-sm mb-3" numberOfLines={2}>
+          <Text className="text-gray-400 text-xs mb-2" numberOfLines={2}>
             {item.description}
           </Text>
-          <View className="flex-row flex-wrap mb-3">
-            {item.technologies.slice(0, 3).map((tech: string, techIndex: number) => (
-              <View key={techIndex} className="bg-gray-700 rounded-full px-3 py-1 mr-2 mb-1">
+          <View className="flex-row flex-wrap mb-2">
+            {item.technologies.slice(0, 2).map((tech: string, techIndex: number) => (
+              <View key={techIndex} className="bg-gray-700 rounded-full px-2 py-1 mr-1 mb-1">
                 <Text className="text-gray-300 text-xs">{tech}</Text>
               </View>
             ))}
-            {item.technologies.length > 3 && (
-              <View className="bg-gray-700 rounded-full px-3 py-1 mr-2 mb-1">
-                <Text className="text-gray-300 text-xs">+{item.technologies.length - 3}</Text>
+            {item.technologies.length > 2 && (
+              <View className="bg-gray-700 rounded-full px-2 py-1 mr-1 mb-1">
+                <Text className="text-gray-300 text-xs">+{item.technologies.length - 2}</Text>
               </View>
             )}
           </View>
-          <View className="flex-row space-x-3">
+          <View className="flex-row space-x-2">
             <TouchableOpacity 
-              className="flex-1 bg-blue-600 rounded-lg py-2 items-center"
+              className="flex-1 bg-blue-600 rounded-lg py-1 items-center"
               onPress={() => Linking.openURL(item.live)}
             >
-              <Text className="text-white font-semibold text-sm">View Live</Text>
+              <Text className="text-white font-semibold text-xs">Live</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-              className="flex-1 bg-gray-700 rounded-lg py-2 items-center"
+              className="flex-1 bg-gray-700 rounded-lg py-1 items-center"
               onPress={() => Linking.openURL(item.github)}
             >
-              <Text className="text-white font-semibold text-sm">GitHub</Text>
+              <Text className="text-white font-semibold text-xs">GitHub</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -132,8 +236,15 @@ const Search = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-900">
-      {/* Header */}
-      <View className="px-6 pt-4 pb-6">
+      <Animated.View
+        style={{
+          flex: 1,
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }],
+        }}
+      >
+        {/* Header */}
+        <View className="px-6 pt-4 pb-6">
         <Text className="text-3xl font-bold text-white mb-4">Projects</Text>
         
         {/* Search Bar */}
@@ -203,22 +314,63 @@ const Search = () => {
       </View>
 
       {/* Projects Grid */}
-      <FlatList
-        data={filteredProjects}
-        renderItem={renderProject}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={2}
-        columnWrapperStyle={{ justifyContent: "space-between" }}
-        contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <View className="flex-1 items-center justify-center py-20">
-            <Ionicons name="code-slash-outline" size={64} color="#6b7280" />
-            <Text className="text-gray-400 text-lg mt-4">No projects found</Text>
-            <Text className="text-gray-500 text-sm">Try adjusting your search or filters</Text>
-          </View>
-        }
-      />
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
+        <View className="px-6">
+          {filteredProjects.length === 0 ? (
+            <View className="flex-1 items-center justify-center py-20">
+              <Ionicons name="code-slash-outline" size={64} color="#6b7280" />
+              <Text className="text-gray-400 text-lg mt-4">No projects found</Text>
+              <Text className="text-gray-500 text-sm">Try adjusting your search or filters</Text>
+            </View>
+          ) : (
+            <View>
+              {/* Row 1: First 3 projects */}
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                className="mb-4"
+                contentContainerStyle={{ paddingHorizontal: 0 }}
+              >
+                {filteredProjects.slice(0, 3).map((project) => (
+                  <View key={project.id} className="w-56 mr-4">
+                    {renderProject({ item: project })}
+                  </View>
+                ))}
+              </ScrollView>
+
+              {/* Row 2: Next 3 projects */}
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                className="mb-4"
+                contentContainerStyle={{ paddingHorizontal: 0 }}
+              >
+                {filteredProjects.slice(3, 6).map((project) => (
+                  <View key={project.id} className="w-56 mr-4">
+                    {renderProject({ item: project })}
+                  </View>
+                ))}
+              </ScrollView>
+
+              {/* Row 3: Remaining projects */}
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                className="mb-4"
+                contentContainerStyle={{ paddingHorizontal: 0 }}
+              >
+                {filteredProjects.slice(6).map((project) => (
+                  <View key={project.id} className="w-56 mr-4">
+                    {renderProject({ item: project })}
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
+          )}
+          <View className="h-20" />
+        </View>
+      </ScrollView>
+      </Animated.View>
     </SafeAreaView>
   );
 };

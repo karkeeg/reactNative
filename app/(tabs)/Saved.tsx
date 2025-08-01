@@ -1,17 +1,77 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from 'react';
-import { FlatList, Image, Linking, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, FlatList, Image, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+interface Certification {
+  id: number;
+  name: string;
+  issuer: string;
+  date: string;
+  image: string;
+  credential: string;
+  status: string;
+}
+
+interface Education {
+  id: number;
+  degree: string;
+  university: string;
+  college?: string;
+  school?: string;
+  year: string;
+  location: string;
+  gpa: string;
+  description: string;
+}
+
+interface Experience {
+  id: number;
+  title: string;
+  organization: string;
+  duration: string;
+  description: string;
+  achievements: string[];
+}
+
+interface SocialMedia {
+  id: number;
+  name: string;
+  username: string;
+  url: string;
+  icon: string;
+  color: string;
+  followers: string;
+}
 
 const Qualifications = () => {
   const [activeTab, setActiveTab] = useState('certifications');
 
-  const certifications = [
+  // Animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(35)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 650,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 550,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  const certifications: Certification[] = [
     
     {
       id: 1,
       name: "React Developer Certification",
-      issuer: "Meta",
+      issuer: "Evolve IT Hub",
       date: "2024",
       image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=200&h=200&fit=crop",
       credential: "Evolve IT Hub",
@@ -20,7 +80,7 @@ const Qualifications = () => {
     {
       id: 2,
       name: "Node.js Backend Development",
-      issuer: "OpenJS Foundation",
+      issuer: "Evolve IT Hub",
       date: "2024",
       image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=200&h=200&fit=crop",
       credential: "Evolve IT Hub",
@@ -29,7 +89,7 @@ const Qualifications = () => {
     {
       id: 3,
       name: "MongoDB Database Administrator",
-      issuer: "MongoDB University",
+      issuer: "Evolve IT Hub",
       date: "2024",
       image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=200&h=200&fit=crop",
       credential: "Evolve IT Hub",
@@ -37,7 +97,7 @@ const Qualifications = () => {
     }
   ];
 
-  const education = [
+  const education: Education[] = [
     {
       id: 1,
       degree: "Bachelor of Computer Application",
@@ -70,7 +130,7 @@ const Qualifications = () => {
     }
   ];
 
-  const personalExperience = [
+  const personalExperience: Experience[] = [
     {
       id: 1,
       title: "Full Stack Developer ",
@@ -97,7 +157,7 @@ const Qualifications = () => {
     }
   ];
 
-  const socialMedia = [
+  const socialMedia: SocialMedia[] = [
     {
       id: 1,
       name: "GitHub",
@@ -105,21 +165,21 @@ const Qualifications = () => {
       url: "https://github.com/karkeeg",
       icon: "logo-github",
       color: "#333",
-      followers: "2 followers"
+      followers: "25+ followers"
     },
     {
       id: 2,
       name: "LinkedIn",
-      username: "bibek-karki-b41703272",
+      username: "Bibek karki",
       url: "https://linkedin.com/in/bibek-karki-b41703272",
       icon: "logo-linkedin",
       color: "#0077B5",
-      followers: "LinkedIn"
+      followers: "150+ Connections"
     },
     {
       id: 3,
       name: "Facebook",
-      username: "bibek.karki.90475",
+      username: "Bibek Karki",
       url: "https://facebook.com/bibek.karki.90475",
       icon: "logo-facebook",
       color: "#1877F2",
@@ -132,24 +192,28 @@ const Qualifications = () => {
       url: "https://instagram.com/bibek_karki8",
       icon: "logo-instagram",
       color: "#E4405F",
-      followers: "Instagram"
+      followers: "200 Followers"
     },
     {
       id: 5,
       name: "Portfolio",
-      username: "karkibibek.netlify.app",
+      username: "karkibibek",
       url: "https://karkibibek.netlify.app",
       icon: "globe-outline",
       color: "#6366F1",
-      followers: "Portfolio"
+      followers: "250+ view in last month"
     }
   ];
 
-  const renderCertification = ({ item }: { item: any }) => (
+  const renderCertification = ({ item }: { item: Certification }) => (
     <TouchableOpacity className="w-full mb-4">
       <View className="bg-gray-800 rounded-2xl p-4">
         <View className="flex-row items-center mb-3">
-          <Image source={{ uri: item.image }} className="w-16 h-16 rounded-xl mr-4" />
+          <Image 
+            source={{ uri: String(item.image) }} 
+            className="w-16 h-16 rounded-xl mr-4"
+            resizeMode="cover"
+          />
           <View className="flex-1">
             <Text className="text-white font-semibold text-lg">{item.name}</Text>
             <Text className="text-blue-400 text-sm">{item.issuer}</Text>
@@ -164,7 +228,7 @@ const Qualifications = () => {
     </TouchableOpacity>
   );
 
-  const renderEducation = ({ item }: { item: any }) => (
+  const renderEducation = ({ item }: { item: Education }) => (
     <TouchableOpacity className="w-full mb-4">
       <View className="bg-gray-800 rounded-2xl p-4">
         <View className="flex-row justify-between items-start mb-2">
@@ -179,7 +243,7 @@ const Qualifications = () => {
     </TouchableOpacity>
   );
 
-  const renderExperience = ({ item }: { item: any }) => (
+  const renderExperience = ({ item }: { item: Experience }) => (
     <TouchableOpacity className="w-full mb-4">
       <View className="bg-gray-800 rounded-2xl p-4">
         <View className="flex-row justify-between items-start mb-2">
@@ -200,7 +264,7 @@ const Qualifications = () => {
     </TouchableOpacity>
   );
 
-  const renderSocialMedia = ({ item }: { item: any }) => (
+  const renderSocialMedia = ({ item }: { item: SocialMedia }) => (
     <TouchableOpacity 
       className="w-[48%] mb-4"
       onPress={() => Linking.openURL(item.url)}
@@ -221,13 +285,35 @@ const Qualifications = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-900">
-      {/* Header */}
-      <View className="px-6 pt-4 pb-6">
+      <Animated.View
+        style={{
+          flex: 1,
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }],
+        }}
+      >
+        {/* Header */}
+        <View className="px-2 pt-4 pb-6">
         <Text className="text-3xl font-bold text-white mb-6">Qualifications</Text>
         
         {/* Tab Buttons */}
-        <View className="flex-row bg-gray-800 rounded-2xl p-1 mb-6">
+        <View className="flex-row bg-gray-800 w-[350px] rounded-2xl p-1 mb-6">
+         
           <TouchableOpacity
+            onPress={() => setActiveTab('experience')}
+            className={`flex-1 py-3 rounded-xl ${
+              activeTab === 'experience' ? 'bg-gray-700' : ''
+            }`}
+          >
+            <Text
+              className={`text-center font-semibold ${
+                activeTab === 'experience' ? 'text-white' : 'text-gray-400'
+              }`}
+            >
+              Experience
+            </Text>
+          </TouchableOpacity> 
+           <TouchableOpacity
             onPress={() => setActiveTab('certifications')}
             className={`flex-1 py-3 rounded-xl ${
               activeTab === 'certifications' ? 'bg-gray-700' : ''
@@ -256,20 +342,6 @@ const Qualifications = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setActiveTab('experience')}
-            className={`flex-1 py-3 rounded-xl ${
-              activeTab === 'experience' ? 'bg-gray-700' : ''
-            }`}
-          >
-            <Text
-              className={`text-center font-semibold ${
-                activeTab === 'experience' ? 'text-white' : 'text-gray-400'
-              }`}
-            >
-              Experience
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
             onPress={() => setActiveTab('social')}
             className={`flex-1 py-3 rounded-xl ${
               activeTab === 'social' ? 'bg-gray-700' : ''
@@ -287,72 +359,82 @@ const Qualifications = () => {
       </View>
 
       {/* Content */}
-      {activeTab === 'certifications' && (
-        <View className="px-6">
-          <Text className="text-lg font-semibold text-white mb-4">Professional Certifications</Text>
-          <FlatList
-            data={certifications}
-            renderItem={renderCertification}
-            keyExtractor={(item) => item.id.toString()}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              <View className="flex-1 items-center justify-center py-20">
-                <Ionicons name="ribbon-outline" size={64} color="#6b7280" />
-                <Text className="text-gray-400 text-lg mt-4">No certifications yet</Text>
-              </View>
-            }
-          />
-          <View className="h-20" />
-        </View>
-      )}
-
-      {activeTab === 'education' && (
-        <View className="px-6">
-          <Text className="text-lg font-semibold text-white mb-4">Academic Background</Text>
-          <FlatList
-            data={education}
-            renderItem={renderEducation}
-            keyExtractor={(item) => item.id.toString()}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              <View className="flex-1 items-center justify-center py-20">
-                <Ionicons name="school-outline" size={64} color="#6b7280" />
-                <Text className="text-gray-400 text-lg mt-4">No education details</Text>
-              </View>
-            }
-          />
-          <View className="h-20" />
-        </View>
-      )}
-
-      {activeTab === 'experience' && (
-        <View className="px-6">
-          <Text className="text-lg font-semibold text-white mb-4">Personal Experience</Text>
-          <FlatList
-            data={personalExperience}
-            renderItem={renderExperience}
-            keyExtractor={(item) => item.id.toString()}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              <View className="flex-1 items-center justify-center py-20">
-                <Ionicons name="briefcase-outline" size={64} color="#6b7280" />
-                <Text className="text-gray-400 text-lg mt-4">No experience details</Text>
-              </View>
-            }
-          />
-          <View className="h-20" />
-        </View>
-      )}
-
-      {activeTab === 'social' && (
-        <View className="px-6">
-          <Text className="text-lg font-semibold text-white mb-4">Social Media & Links</Text>
-          <View className="flex-row flex-wrap justify-between">
-            {socialMedia.map((social) => renderSocialMedia({ item: social }))}
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
+        {activeTab === 'certifications' && (
+          <View className="px-6">
+            <Text className="text-lg font-semibold text-white mb-4">Professional Certifications</Text>
+            <View className="h-px bg-gray-700 mb-6" />
+            <FlatList
+              data={certifications}
+              renderItem={renderCertification}
+              keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
+              ListEmptyComponent={
+                <View className="flex-1 items-center justify-center py-20">
+                  <Ionicons name="ribbon-outline" size={64} color="#6b7280" />
+                  <Text className="text-gray-400 text-lg mt-4">No certifications yet</Text>
+                </View>
+              }
+            />
+            <View className="h-20" />
           </View>
-          <View className="h-20" />
-        </View>
-      )}
+        )}
+
+        {activeTab === 'education' && (
+          <View className="px-6">
+            <Text className="text-lg font-semibold text-white mb-4">Academic Background</Text>
+            <View className="h-px bg-gray-700 mb-6" />
+            <FlatList
+              data={education}
+              renderItem={renderEducation}
+              keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
+              ListEmptyComponent={
+                <View className="flex-1 items-center justify-center py-20">
+                  <Ionicons name="school-outline" size={64} color="#6b7280" />
+                  <Text className="text-gray-400 text-lg mt-4">No education details</Text>
+                </View>
+              }
+            />
+            <View className="h-20" />
+          </View>
+        )}
+
+        {activeTab === 'experience' && (
+          <View className="px-6">
+            <Text className="text-lg font-semibold text-white mb-4">Personal Experience</Text>
+            <View className="h-px bg-gray-700 mb-6" />
+            <FlatList
+              data={personalExperience}
+              renderItem={renderExperience}
+              keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
+              ListEmptyComponent={
+                <View className="flex-1 items-center justify-center py-20">
+                  <Ionicons name="briefcase-outline" size={64} color="#6b7280" />
+                  <Text className="text-gray-400 text-lg mt-4">No experience details</Text>
+                </View>
+              }
+            />
+            <View className="h-20" />
+          </View>
+        )}
+
+        {activeTab === 'social' && (
+          <View className="px-6">
+            <Text className="text-lg font-semibold text-white mb-4">Social Media & Links</Text>
+            <View className="h-px bg-gray-700 mb-6" />
+            <View className="flex-row flex-wrap justify-between">
+              {socialMedia.map((social) => renderSocialMedia({ item: social }))}
+            </View>
+            <View className="h-20" />
+          </View>
+        )}
+      </ScrollView>
+      </Animated.View>
     </SafeAreaView>
   );
 };

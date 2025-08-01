@@ -1,14 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Tabs } from "expo-router";
+import { useEffect, useRef } from "react";
 import type { TextStyle, ViewStyle } from "react-native";
-import { Text, View } from "react-native";
+import { Animated, Text, View } from "react-native";
 
 const tabConfig = [
   { name: "index", label: "Home", icon: "home" },
   { name: "Search", label: "Projects", icon: "folder" },
   { name: "profile", label: "Profile", icon: "person" },
-  { name: "Saved", label: "Qualifications", icon: "school" },
+  { name: "Saved", label: "Qualification", icon: "school" },
 ];
 
 type TabBarIconProps = { focused: boolean };
@@ -16,6 +17,24 @@ type TabBarIconProps = { focused: boolean };
 const getTabBarIcon =
   (icon: string, label: string) =>
   ({ focused }: TabBarIconProps) => {
+    const scaleAnim = useRef(new Animated.Value(focused ? 1.1 : 1)).current;
+    const opacityAnim = useRef(new Animated.Value(focused ? 1 : 0.7)).current;
+
+    useEffect(() => {
+      Animated.parallel([
+        Animated.timing(scaleAnim, {
+          toValue: focused ? 1.1 : 1,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacityAnim, {
+          toValue: focused ? 1 : 0.7,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }, [focused]);
+
     const activeColors = ["#374151", "#6b7280"] as [string, string];
     const containerStyle: ViewStyle = {
       borderRadius: 100,
@@ -31,31 +50,49 @@ const getTabBarIcon =
       flexDirection: "column",
     };
     const iconColor = focused ? "#fff" : "#ffffff";
-    const textColor = focused ? "#fff" : "#ffffff";
+    const textColor = focused ? "#fff" : "transparent";
     const textStyle: TextStyle = {
       color: textColor,
       fontSize: 12,
       fontWeight: "700",
       marginTop: 2,
     };
+
+    const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
+    const AnimatedView = Animated.createAnimatedComponent(View);
+
     if (focused) {
       return (
-        <LinearGradient
+        <AnimatedLinearGradient
           colors={activeColors}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          style={containerStyle}
+          style={[
+            containerStyle,
+            {
+              transform: [{ scale: scaleAnim }],
+              opacity: opacityAnim,
+            },
+          ]}
         >
           <Ionicons name={icon as any} size={20} color={iconColor} />
           <Text style={textStyle}>{label}</Text>
-        </LinearGradient>
+        </AnimatedLinearGradient>
       );
     } else {
       return (
-        <View style={containerStyle}>
+        <AnimatedView
+          style={[
+            containerStyle,
+            {
+              transform: [{ scale: scaleAnim }],
+              opacity: opacityAnim,
+            },
+          ]}
+        >
           <Ionicons name={icon as any} size={20} color={iconColor} />
           <Text style={textStyle}>{label}</Text>
-        </View>
+        </AnimatedView>
       );
     }
   };

@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
-import { Alert, Image, Linking, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { router } from "expo-router";
+import { useEffect, useRef, useState } from "react";
+import { Alert, Animated, Image, Linking, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Profile = () => {
@@ -11,6 +12,25 @@ const Profile = () => {
     subject: '',
     message: ''
   });
+
+  // Animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(40)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 700,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   const handleSendEmail = () => {
     const { name, email, subject, message } = contactForm;
@@ -35,7 +55,7 @@ const Profile = () => {
     avatar: require("../../assets/images/139469612.jpeg"),
     location: "Kathmandu",
     website: "karkibibek.netlify.app",
-    email: "hello@bibekkarki.com",
+    email: "karkibibek64@gmail.com",
     github: "github.com/karkeeg",
     linkedin: "linkedin.com/in/bibek-karki-b41703272",
     facebook: "facebook.com/bibek.karki.90475",
@@ -49,7 +69,7 @@ const Profile = () => {
     experience: [
       {
         id: 1,
-        company: "Evolve IT Hub",
+        company: "NextWaveAi",
         position: "Full Stack Developer",
         duration: "May 2025 - Present",
         description: "Leading development of enterprise applications using React, Node.js, and modern web technologies."
@@ -80,48 +100,61 @@ const Profile = () => {
     recentProjects: [
       {
         id: 1,
-        image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&h=200&fit=crop",
-        title: "E-Commerce Platform",
-        github: "github.com/karkeeg/ecommerce-using-FullStack"
+        image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=200&h=200&fit=crop",
+        title: "React Native Portfolio",
+        github: "github.com/karkeeg/reactNative",
+        type: "Mobile"
       },
       {
         id: 2,
-        image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=200&h=200&fit=crop",
-        title: "MyPortfolio",
-        github: "github.com/karkeeg/MyPortfolio"
+        image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&h=200&fit=crop",
+        title: "E-Commerce FullStack",
+        github: "github.com/karkeeg/ecommerce-using-FullStack",
+        type: "Full Stack"
       },
       {
         id: 3,
-        image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=200&h=200&fit=crop",
-        title: "KarkeeAirlines",
-        github: "github.com/karkeeg/KarkeeAirlines"
+        image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=200&h=200&fit=crop",
+        title: "NextWave AI Website",
+        github: "github.com/karkeeg/nextwave-ai",
+        type: "Frontend"
       },
       {
         id: 4,
-        image: "https://images.unsplash.com/photo-1592210454359-9043f067919b?w=200&h=200&fit=crop",
-        title: "CEC Website",
-        github: "github.com/karkeeg/CEC"
+        image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=200&h=200&fit=crop",
+        title: "MyPortfolio",
+        github: "github.com/karkeeg/MyPortfolio",
+        type: "Frontend"
       },
       {
         id: 5,
-        image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=200&h=200&fit=crop",
-        title: "Bus Reservation",
-        github: "github.com/karkeeg/bus-reservation"
+        image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=200&h=200&fit=crop",
+        title: "KarkeeAirlines",
+        github: "github.com/karkeeg/KarkeeAirlines",
+        type: "Frontend"
       },
       {
         id: 6,
-        image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=200&h=200&fit=crop",
-        title: "React Native App",
-        github: "github.com/karkeeg/reactNative"
+        image: "https://images.unsplash.com/photo-1592210454359-9043f067919b?w=200&h=200&fit=crop",
+        title: "CEC Website",
+        github: "github.com/karkeeg/CEC",
+        type: "Frontend"
       },
     ],
   };
 
   return (
     <SafeAreaView className="flex-1 bg-gray-900">
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Animated.View
+        style={{
+          flex: 1,
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }],
+        }}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <View className="px-6 pt-4 pb-6">
+        <View className="px-6 pt-4 ">
           <View className="flex-row items-center justify-between mb-6">
             <Text className="text-3xl font-bold text-white">Profile</Text>
             <TouchableOpacity className="w-10 h-10 bg-gray-800 rounded-full items-center justify-center">
@@ -130,57 +163,65 @@ const Profile = () => {
           </View>
 
           {/* Profile Info */}
-          <View className="items-center mb-6">
+          <View className="items-center ">
             <View className="relative">
               <Image
-                source={{ uri: developer.avatar }}
-                className="w-24 h-24 rounded-full mb-4 border-4 border-gray-700"
+                source={developer.avatar}
+                className="w-28 h-28 rounded-full mb-4 border-4 border-gray-700"
               />
               <View className="absolute bottom-4 right-4 w-6 h-6 bg-green-400 rounded-full border-2 border-gray-900"></View>
             </View>
             <Text className="text-2xl font-bold text-white mb-2">{developer.name}</Text>
             <Text className="text-lg text-blue-400 font-semibold mb-1">{developer.title}</Text>
-            <Text className="text-gray-300 mb-4">{developer.location}</Text>
-            
-            {/* Stats */}
-            <View className="flex-row space-x-8 mb-6">
-              <View className="items-center">
-                <Text className="text-xl font-bold text-white">{developer.stats.projects}</Text>
-                <Text className="text-gray-400 text-sm">Projects</Text>
-              </View>
-              <View className="items-center">
-                <Text className="text-xl font-bold text-white">{developer.stats.experience}</Text>
-                <Text className="text-gray-400 text-sm">Experience</Text>
-              </View>
-              <View className="items-center">
-                <Text className="text-xl font-bold text-white">{developer.stats.technologies}</Text>
-                <Text className="text-gray-400 text-sm">Technologies</Text>
-              </View>
-              <View className="items-center">
-                <Text className="text-xl font-bold text-white">{developer.stats.clients}</Text>
-                <Text className="text-gray-400 text-sm">Clients</Text>
-              </View>
-            </View>
+            <Text className="text-gray-300 mb-6">{developer.location}</Text>
+          </View>
+        </View>
 
-            {/* Bio */}
-            <View className="bg-gray-800 rounded-2xl p-4 w-full mb-6">
-              <Text className="text-gray-300 leading-6">{developer.bio}</Text>
+        {/* Stats */}
+        <View className="px-6 mb-6">
+          <View className="flex-row justify-between bg-gray-800 rounded-2xl p-4">
+            <View className="items-center">
+              <Text className="text-2xl font-bold text-white">{developer.stats.projects}</Text>
+              <Text className="text-gray-400 text-sm">Projects</Text>
             </View>
-
-            {/* Action Buttons */}
-            <View className="flex-row space-x-3 w-full">
-              <TouchableOpacity className="flex-1 bg-blue-600 rounded-2xl py-3 items-center">
-                <Text className="text-white font-semibold">Download CV</Text>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                className="flex-1 bg-gray-700 rounded-2xl py-3 items-center"
-                onPress={() => setContactModalVisible(true)}
-              >
-                <Text className="text-white font-semibold">Contact</Text>
-              </TouchableOpacity>
+            <View className="items-center">
+              <Text className="text-2xl font-bold text-white">{developer.stats.experience}</Text>
+              <Text className="text-gray-400 text-sm">Experience</Text>
+            </View>
+            <View className="items-center">
+              <Text className="text-2xl font-bold text-white">{developer.stats.technologies}</Text>
+              <Text className="text-gray-400 text-sm">Technologies</Text>
+            </View>
+            <View className="items-center">
+              <Text className="text-2xl font-bold text-white">{developer.stats.clients}</Text>
+              <Text className="text-gray-400 text-sm">Clients</Text>
             </View>
           </View>
         </View>
+
+        {/* Bio Section */}
+        <View className="px-6 mb-6">
+          <View className="bg-gray-800 rounded-2xl p-4 w-full">
+            <Text className="text-gray-300 leading-6">{developer.bio}</Text>
+          </View>
+        </View>
+
+        {/* Action Buttons */}
+        <View className="px-6 mb-6">
+          <View className="flex-row space-x-3 w-full">
+            <TouchableOpacity className="flex-1 bg-blue-600 rounded-2xl py-3 items-center">
+              <Text className="text-white font-semibold">Download CV</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              className="flex-1 bg-gray-700 rounded-2xl py-3 items-center"
+              onPress={() => setContactModalVisible(true)}
+            >
+              <Text className="text-white font-semibold">Contact</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+
 
         {/* Experience */}
         <View className="px-6 mb-6">
@@ -266,26 +307,39 @@ const Profile = () => {
         <View className="px-6 mb-8">
           <View className="flex-row items-center justify-between mb-4">
             <Text className="text-xl font-bold text-white">Recent Projects</Text>
-            <TouchableOpacity>
-              <Text className="text-gray-300 font-semibold">View All</Text>
+            <TouchableOpacity onPress={() => router.push("/(tabs)/Search")}>
+              <Text className="text-blue-400 font-semibold">View All</Text>
             </TouchableOpacity>
           </View>
-          <View className="flex-row flex-wrap justify-between">
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ paddingHorizontal: 0 }}
+            className="mb-4"
+          >
             {developer.recentProjects.map((project) => (
-              <TouchableOpacity key={project.id} className="w-[48%] mb-4">
+              <TouchableOpacity 
+                key={project.id} 
+                className="w-40 mr-4"
+                onPress={() => Linking.openURL(`https://${project.github}`)}
+              >
                 <View className="relative">
-                  <Image source={{ uri: project.image }} className="w-full h-32 rounded-xl" />
+                  <Image source={{ uri: String(project.image) }} className="w-full h-24 rounded-xl" />
+                  <View className="absolute top-2 right-2 bg-blue-600 rounded-full px-2 py-1">
+                    <Text className="text-white text-xs font-semibold">{project.type}</Text>
+                  </View>
                 </View>
-                <Text className="text-white text-sm mt-2">{project.title}</Text>
+                <Text className="text-white text-sm mt-2 font-semibold">{project.title}</Text>
                 <Text className="text-gray-400 text-xs">{project.github}</Text>
               </TouchableOpacity>
             ))}
-          </View>
+          </ScrollView>
         </View>
 
         {/* Bottom spacing */}
         <View className="h-20" />
       </ScrollView>
+      </Animated.View>
 
       {/* Contact Modal */}
       <Modal
